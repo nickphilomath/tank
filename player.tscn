@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2r3rx4olc8jk"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_fiumy"]
+[ext_resource type="PackedScene" uid="uid://caleuco037ja2" path="res://Arty.blend" id="2_lvurx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lcg1f"]
+size = Vector3(4.70996, 0.950195, 1.97902)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_fiumy")
+
+[node name="Arty" parent="." instance=ExtResource("2_lvurx")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.00320929, 0.220048, -0.00306706)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.00565069, 0.243652, -0.00591274)
+shape = SubResource("BoxShape3D_lcg1f")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83373, 4.0926)
