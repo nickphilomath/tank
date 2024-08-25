@@ -6,9 +6,11 @@ const SPEED = 500
 const ROTATE_SPEED = 60
 const CAM_ROTATE_SPEED = 0.003
 
-var camera_rotation_y = 0  # radian
-var camera_rotation_x = 0  # radian
-var camera_distance = 10 # unit
+var cam_rotation_y = 0  # radian
+var cam_rotation_x = 0  # radian
+var cam_distance = 7 # unit
+const min_cam_distance = 1
+const max_cam_distance = 10
 
 
 #func _ready():
@@ -16,43 +18,31 @@ var camera_distance = 10 # unit
 
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion:
-		camera_rotation_y += CAM_ROTATE_SPEED * -event.relative.x
-		camera_rotation_x += CAM_ROTATE_SPEED * -event.relative.y
-	
-		## rotate around y and then x axis
-		#camera.position = Vector3(
-			#camera_distance * sin(camera_rotation_y),
-			#camera_distance * cos(camera_rotation_y) * sin(camera_rotation_x),
-			#camera_distance * cos(camera_rotation_y) * cos(camera_rotation_x)
-		#)
-		# rotate around x and then y axis
-		camera.position = Vector3(
-			camera_distance * cos(camera_rotation_x) * sin(camera_rotation_y),
-			-camera_distance * sin(camera_rotation_x),
-			camera_distance * cos(camera_rotation_x) * cos(camera_rotation_y)
-		)
-		camera.look_at(position)
-		
-		
-		#var camera_z = cos(camera_rotation_z)
-		#var camera_y = sin(camera_rotation_y)
-		#camera.global_position = Vector3(0, camera_y, camera_z)
-		#print(camera.global_position)
-		
-		
-		## Calculate the direction from the center to the camera
-		#var cam_direction = camera.global_transform.origin - position
-		## Rotate this direction vector around the Y-axis (up axis)
-		#cam_direction = cam_direction.rotated(Vector3.UP,  CAM_ROTATE_SPEED * -event.relative.x)
-		#cam_direction = cam_direction.rotated(Vector3.LEFT, CAM_ROTATE_SPEED * event.relative.y)
-		## Set the new camera position
-		#camera.global_transform.origin = position + cam_direction
-		## Make the camera look at the center point
-		#camera.look_at(position, Vector3.UP)
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			cam_distance -= 1
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			cam_distance += 1
+			
+	elif event is InputEventMouseMotion:
+		cam_rotation_y += CAM_ROTATE_SPEED * -event.relative.x
+		cam_rotation_x += CAM_ROTATE_SPEED * -event.relative.y
 
 
 func _physics_process(delta):
+	## rotate around y and then x axis
+	#camera.position = Vector3(
+		#cam_distance * sin(cam_rotation_y),
+		#cam_distance * cos(cam_rotation_y) * sin(cam_rotation_x),
+		#cam_distance * cos(cam_rotation_y) * cos(cam_rotation_x)
+	#)
+	# rotate around x and then y axis
+	camera.position = Vector3(
+		cam_distance * cos(cam_rotation_x) * sin(cam_rotation_y),
+		-cam_distance * sin(cam_rotation_x),
+		cam_distance * cos(cam_rotation_x) * cos(cam_rotation_y)
+	)
+	camera.look_at(position)
 	
 	
 	# Add the gravity.
